@@ -10,7 +10,8 @@ form {
   border: 1px solid rgba(106, 105, 105, 0.267);
   text-align: center;
   padding: 0 15px 20px 15px;
-  border-radius: 8px;
+  box-shadow: 3px -11px 33px 19px rgba(97, 97, 97, 0.28);
+  border-radius: 10px;
 }
 
 .form-prices {
@@ -20,7 +21,7 @@ form {
   font-size: 1em;
   justify-content: space-between;
   width: fit-content;
-  margin: 0  auto 10px auto;
+  margin: 0 auto 10px auto;
   padding: 10px 30px 10px 10px;
   gap: 4px;
   border-radius: 10px;
@@ -88,4 +89,14 @@ label {
   display: grid;
   grid-template-columns: auto auto auto;
   gap: 15px;
+}
+
+@media screen and (max-width: 425px) {
+  .currencies {
+    grid-template-columns: auto auto;
+  }
+
+  .form-prices input {
+    width: 100px;
+  }
 }
