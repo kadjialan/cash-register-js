@@ -7,10 +7,10 @@ html {
 }
 
 form {
-  border: 1px solid rgba(106, 105, 105, 0.267);
+  border: 1px solid #6a696944;
   text-align: center;
-  padding: 0 15px 20px 15px;
-  box-shadow: 3px -11px 33px 19px rgba(97, 97, 97, 0.28);
+  padding: 0 15px 20px;
+  box-shadow: 3px -11px 33px 19px #61616147;
   border-radius: 10px;
 }
 
@@ -21,7 +21,7 @@ form {
   font-size: 1em;
   justify-content: space-between;
   width: fit-content;
-  margin: 0 auto 10px auto;
+  margin: 0 auto 10px;
   padding: 10px 30px 10px 10px;
   gap: 4px;
   border-radius: 10px;
@@ -33,7 +33,7 @@ form {
 }
 
 .form-row {
-  background-color: rgb(209, 206, 206);
+  background-color: #d1cece;
   flex-direction: column;
   display: flex;
   font-size: 1em;
