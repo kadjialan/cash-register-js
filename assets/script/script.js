@@ -57,7 +57,6 @@ function checkCashRegister (price, cash, cid) {
       }
     })
 
-
     if (returnAmount === 0) {
       result.status = 'OPEN'
     } else {
