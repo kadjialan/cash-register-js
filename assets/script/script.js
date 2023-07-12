@@ -1,90 +1,82 @@
-const cash = document.getElementById('cash')
-const price = document.getElementById('price')
-const oneHundred = document.getElementById('one-hundred')
-const twenty = document.getElementById('twenty')
-const ten = document.getElementById('ten')
-const five = document.getElementById('five')
-const one = document.getElementById('one')
-const quarter = document.getElementById('quarter')
-const dime = document.getElementById('dime')
-const nickel = document.getElementById('nickel')
-const penny = document.getElementById('penny')
-const form = document.getElementById('cash-register')
-const resultPara = document.getElementById('result')
+const cash = document.getElementById("cash");
+const price = document.getElementById("price");
+const oneHundred = document.getElementById("one-hundred");
+const twenty = document.getElementById("twenty");
+const ten = document.getElementById("ten");
+const five = document.getElementById("five");
+const one = document.getElementById("one");
+const quarter = document.getElementById("quarter");
+const dime = document.getElementById("dime");
+const nickel = document.getElementById("nickel");
+const penny = document.getElementById("penny");
+const form = document.getElementById("cash-register");
+const resultPara = document.getElementById("result");
 
-function checkCashRegister (price, cash, cid) {
-  const currency = [
-    { name: 'ONE HUNDRED', val: 100.0 },
-    { name: 'TWENTY', val: 20.0 },
-    { name: 'TEN', val: 10.0 },
-    { name: 'FIVE', val: 5.0 },
-    { name: 'ONE', val: 1.0 },
-    { name: 'QUARTER', val: 0.25 },
-    { name: 'DIME', val: 0.1 },
-    { name: 'NICKEL', val: 0.05 },
-    { name: 'PENNY', val: 0.01 }
-  ]
-  const cashInRegister = {}
-  let cashTotalAmount = 0
-  let returnAmount = Math.round((cash - price) * 100) / 100
-  const result = { status: '', change: [] }
+function checkCashRegister(price, cash, cid) {
+  const currency = {
+    PENNY: 1,
+    NICKEL: 5,
+    DIME: 10,
+    QUARTER: 25,
+    ONE: 100,
+    FIVE: 500,
+    TEN: 1000,
+    TWENTY: 2000,
+    "ONE HUNDRED": 10000,
+  };
 
-  cid.forEach((element) => {
-    cashInRegister[element[0]] = element[1]
-    cashTotalAmount += element[1]
-  })
+  let cashTotalAmount = 0; 
+  let diff = cash * 100 - price * 100;
+  let changeSum = diff;
+  let status = "";
+  let change = [];
 
-  if (returnAmount > cashTotalAmount) {
-    result.status = 'INSUFFICIENT_FUNDS'
-    result.change = []
-  } else if (returnAmount === cashTotalAmount) {
-    result.status = 'CLOSED'
-    result.change = cid
-  } else {
-    currency.forEach((element) => {
-      let amount = 0
-      while (
-        returnAmount >= element.val &&
-        cashInRegister[element.name] >= element.val
-      ) {
-        returnAmount -= element.val
-        cashInRegister[element.name] -= element.val
-        amount += element.val
-        returnAmount = Math.round(returnAmount * 100) / 100
-      }
-      if (amount > 0) {
-        result.change.push([element.name, amount])
-      }
-    })
+  let filteredCid = cid.filter((element) => element[1] !== 0).reverse();
 
-    if (returnAmount === 0) {
-      result.status = 'OPEN'
-    } else {
-      result.status = 'INSUFFICIENT_FUNDS'
-      result.change = []
+  filteredCid.forEach((element) => {
+    let curr = element[0];
+    let currSum = element[1] * 100;
+    cashTotalAmount += currSum;
+    let amount = 0;
+
+    while (diff >= currency[curr] && currSum > 0) {
+      amount += currency[curr];
+      diff -= currency[curr];
+      currSum -= currency[curr];
     }
+    if (amount !== 0) {
+      change.push([curr, amount / 100]);
+    }
+  });
+
+  if (diff === 0 && changeSum === cashTotalAmount) {
+    status = "CLOSED";
+    change = cid;
+  } else if (diff < 0) {
+    status = "INSUFFICIENT_FUNDS";
+    change = [];
+  } else {
+    status = "OPEN";
   }
 
-  console.log(result)
-  resultPara.innerHTML = `${result.status} // ${result.change}`
-  return result
+  resultPara.innerHTML = `${status} // ${change}`;
 }
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault()
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
 
   const registerArray = [
-    ['ONE HUNDRED', oneHundred.value],
-    ['TWENTY', twenty.value],
-    ['TEN', ten.value],
-    ['FIVE', five.value],
-    ['ONE', one.value],
-    ['QUARTER', quarter.value],
-    ['DIME', dime.value],
-    ['NICKEL', nickel.value],
-    ['PENNY', penny.value]
-  ]
+    ["PENNY", penny.value],
+    ["NICKEL", nickel.value],
+    ["DIME", dime.value],
+    ["QUARTER", quarter.value],
+    ["ONE", one.value],
+    ["FIVE", five.value],
+    ["TEN", ten.value],
+    ["TWENTY", twenty.value],
+    ["ONE HUNDRED", oneHundred.value],
+  ];
 
-  checkCashRegister(price.value, cash.value, registerArray)
-  console.log(registerArray)
-})
+  checkCashRegister(price.value, cash.value, registerArray);
+  console.log(registerArray);
+});
