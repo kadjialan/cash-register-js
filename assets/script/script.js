@@ -31,21 +31,25 @@ function checkCashRegister (price, cash, cid) {
   let status = ''
   let change = []
 
-  const filteredCid = cid.filter((element) => element[1] !== 0).reverse()
-
+  const filteredCid = cid.filter((element) => {
+   return +element[1] !== 0
+  })
+  
   filteredCid.forEach((element) => {
-    const curr = element[0]
-    let currSum = element[1] * 100
+    let curr = element[0]
+    let currSum = +element[1] * 100
     cashTotalAmount += currSum
     let amount = 0
-
+    
     while (diff >= currency[curr] && currSum > 0) {
       amount += currency[curr]
       diff -= currency[curr]
       currSum -= currency[curr]
     }
+    console.log(amount)
     if (amount !== 0) {
-      change.push([curr, amount / 100])
+      change.push([curr])
+      
     }
   })
 
@@ -66,17 +70,16 @@ form.addEventListener('submit', (e) => {
   e.preventDefault()
 
   const registerArray = [
-    ['PENNY', penny.value],
-    ['NICKEL', nickel.value],
-    ['DIME', dime.value],
-    ['QUARTER', quarter.value],
-    ['ONE', one.value],
-    ['FIVE', five.value],
-    ['TEN', ten.value],
+    ['ONE HUNDRED', oneHundred.value],
     ['TWENTY', twenty.value],
-    ['ONE HUNDRED', oneHundred.value]
+    ['TEN', ten.value],
+    ['FIVE', five.value],
+    ['ONE', one.value],
+    ['QUARTER', quarter.value],
+    ['DIME', dime.value],
+    ['NICKEL', nickel.value],
+    ['PENNY', penny.value]
   ]
 
   checkCashRegister(price.value, cash.value, registerArray)
-  console.log(registerArray)
 })
